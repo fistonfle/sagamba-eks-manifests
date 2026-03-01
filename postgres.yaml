@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  storageClassName: gp2
+  storageClassName: gp2-csi
 ---
 apiVersion: apps/v1
 kind: Deployment

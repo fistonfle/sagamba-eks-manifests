@@ -37,7 +37,7 @@ Kubernetes manifests for running SAGAMBA on **AWS EKS** with horizontal scaling 
 | `namespace.yaml` | `sagamba` namespace |
 | `configmap.yaml` | Shared config (DB, Redis, RabbitMQ, Eureka hosts) |
 | `secrets.yaml` | **Template** – replace values; prefer AWS Secrets Manager + External Secrets in prod |
-| `postgres.yaml` | PostgreSQL + PVC (storageClass: gp2) |
+| `postgres.yaml` | PostgreSQL + PVC (storageClass: gp2-csi) |
 | `redis.yaml` | Redis + PVC |
 | `rabbitmq.yaml` | RabbitMQ + PVC |
 | `service-registry.yaml` | Eureka |
@@ -56,7 +56,7 @@ Kubernetes manifests for running SAGAMBA on **AWS EKS** with horizontal scaling 
 - **kubectl** configured for the cluster
 - **AWS Load Balancer Controller** installed (for Ingress/ALB)
 - **OIDC / IRSA** if using private container registry
-- **Storage**: PVCs use `storageClassName: gp2`; change to `gp2` or your default if needed
+- **Storage**: PVCs use `storageClassName: gp2-csi`; change to `gp2-csi` or your default if needed
 
 ## Image registry
 
@@ -169,7 +169,7 @@ Pods register with Eureka; the gateway discovers instances and calls the corresp
 
 ## Storage class
 
-PVCs use `storageClassName: gp2`. If your EKS default is different or you use a custom driver, set `storageClassName` in each PVC or set a default StorageClass in the cluster.
+PVCs use `storageClassName: gp2-csi`. If your EKS default is different or you use a custom driver, set `storageClassName` in each PVC or set a default StorageClass in the cluster.
 
 ## Useful commands
 
