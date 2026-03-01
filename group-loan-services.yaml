@@ -1,0 +1,279 @@
+# Group Service (port 8006)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: group-service
+  namespace: sagamba
+  labels:
+    app: group-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: group-service
+  template:
+    metadata:
+      labels:
+        app: group-service
+    spec:
+      containers:
+        - name: group-service
+          image: ghcr.io/fistonfle/sagamba-group-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8006
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+            - name: EUREKA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: EUREKA_HOST
+            - name: EUREKA_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: EUREKA_PORT
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: DB_PASSWORD
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: RABBITMQ_PORT
+            - name: RABBITMQ_VIRTUAL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: RABBITMQ_VIRTUAL_HOST
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: RABBITMQ_USERNAME
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: RABBITMQ_PASSWORD
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8006
+            initialDelaySeconds: 90
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8006
+            initialDelaySeconds: 45
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: group-service
+  namespace: sagamba
+spec:
+  selector:
+    app: group-service
+  ports:
+    - port: 8006
+      targetPort: 8006
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: group-service-hpa
+  namespace: sagamba
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: group-service
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+# Loan Service (port 8007)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loan-service
+  namespace: sagamba
+  labels:
+    app: loan-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: loan-service
+  template:
+    metadata:
+      labels:
+        app: loan-service
+    spec:
+      containers:
+        - name: loan-service
+          image: ghcr.io/fistonfle/sagamba-loan-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8007
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+            - name: EUREKA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: EUREKA_HOST
+            - name: EUREKA_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: EUREKA_PORT
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_NAME
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: DB_PASSWORD
+            - name: RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: RABBITMQ_PORT
+            - name: RABBITMQ_VIRTUAL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: RABBITMQ_VIRTUAL_HOST
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: RABBITMQ_USERNAME
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: RABBITMQ_PASSWORD
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8007
+            initialDelaySeconds: 90
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8007
+            initialDelaySeconds: 45
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loan-service
+  namespace: sagamba
+spec:
+  selector:
+    app: loan-service
+  ports:
+    - port: 8007
+      targetPort: 8007
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: loan-service-hpa
+  namespace: sagamba
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: loan-service
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

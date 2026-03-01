@@ -1,0 +1,31 @@
+# Optional: use Kustomize to deploy with a custom registry/tag.
+# Example: kustomize build . | kubectl apply -f -
+# Or: kustomize build --load_restrictor none .  (if needed)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sagamba
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secrets.yaml
+  - postgres.yaml
+  - redis.yaml
+  - rabbitmq.yaml
+  - service-registry.yaml
+  - api-gateway.yaml
+  - auth-service.yaml
+  - organization-service.yaml
+  - beneficiary-iga-services.yaml
+  - group-loan-services.yaml
+  - poverty-assessment-report-audit-services.yaml
+  - frontend.yaml
+  - ingress.yaml
+# Uncomment and set to override image registry/tag:
+# images:
+#   - name: ghcr.io/fistonfle/sagamba-api-gateway
+#     newName: 123456789012.dkr.ecr.eu-west-1.amazonaws.com/sagamba-api-gateway
+#     newTag: v1.0.0
+#   - name: ghcr.io/fistonfle/sagamba-auth-service
+#     newName: 123456789012.dkr.ecr.eu-west-1.amazonaws.com/sagamba-auth-service
+#     newTag: v1.0.0
+#   # ... repeat for other images

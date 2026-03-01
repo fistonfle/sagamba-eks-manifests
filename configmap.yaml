@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sagamba-config
+  namespace: sagamba
+  labels:
+    app.kubernetes.io/part-of: sagamba
+data:
+  # Database (used by services that reference sagamba-config)
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "sagamba_db"
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "sagamba_db"
+  # Redis
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  # RabbitMQ
+  RABBITMQ_HOST: "rabbitmq-service"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_VIRTUAL_HOST: "sagamba"
+  # Eureka
+  EUREKA_HOST: "service-registry-service"
+  EUREKA_PORT: "8761"
+  # Profile for K8s (override per deployment if needed)
+  SPRING_PROFILES_ACTIVE: "kubernetes"

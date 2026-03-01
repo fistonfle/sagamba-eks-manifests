@@ -1,0 +1,79 @@
+# SAGAMBA Frontend - Next.js. Build image with NEXT_PUBLIC_API_URL for your API host.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sagamba-frontend
+  namespace: sagamba
+  labels:
+    app: sagamba-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sagamba-frontend
+  template:
+    metadata:
+      labels:
+        app: sagamba-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/fistonfle/sagamba-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sagamba-frontend
+  namespace: sagamba
+spec:
+  selector:
+    app: sagamba-frontend
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sagamba-frontend-hpa
+  namespace: sagamba
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sagamba-frontend
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

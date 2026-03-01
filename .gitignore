@@ -1,0 +1,18 @@
+# Local overrides (do not commit real secrets)
+secrets-local.yaml
+secrets-prod.yaml
+.env
+.env.*
+*.local.yaml
+
+# Kubectl / Kubeconfig
+kubeconfig
+*.kubeconfig
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/

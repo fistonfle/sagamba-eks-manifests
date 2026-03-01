@@ -1,0 +1,62 @@
+# AWS EKS Ingress - uses AWS Load Balancer Controller to create an ALB.
+# Prerequisites: Install AWS Load Balancer Controller in the cluster.
+# Replace YOUR_DOMAIN and YOUR_ACME_ARN if using TLS with ACM.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sagamba-ingress
+  namespace: sagamba
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    # Optional: TLS with ACM certificate
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT:certificate/YOUR_ACME_ARN
+    # alb.ingress.kubernetes.io/ssl-redirect: "443"
+spec:
+  ingressClassName: alb
+  rules:
+    # API Gateway - backend for /api and /actuator
+    - host: api.sagamba.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway-service
+                port:
+                  number: 80
+    # Frontend
+    - host: app.sagamba.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sagamba-frontend
+                port:
+                  number: 80
+  # Optional: single hostname with path-based routing
+  # rules:
+  #   - host: sagamba.example.com
+  #     http:
+  #       paths:
+  #         - path: /api
+  #           pathType: Prefix
+  #           backend:
+  #             service:
+  #               name: api-gateway-service
+  #               port:
+  #                 number: 80
+  #         - path: /
+  #           pathType: Prefix
+  #           backend:
+  #             service:
+  #               name: sagamba-frontend
+  #               port:
+  #                 number: 80
