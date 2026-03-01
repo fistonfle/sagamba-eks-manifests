@@ -5,7 +5,7 @@ metadata:
   namespace: sagamba
 spec:
   accessModes:
-    - ReadWriteOnce
+    - RReadWriteMany
   resources:
     requests:
       storage: 8Gi
