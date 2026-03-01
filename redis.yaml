@@ -28,6 +28,10 @@ spec:
       labels:
         app: redis
     spec:
+      tolerations:
+        - key: "eks.amazonaws.com/compute-type"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: redis
           image: redis:7-alpine

@@ -28,6 +28,10 @@ spec:
       labels:
         app: rabbitmq
     spec:
+      tolerations:
+        - key: "eks.amazonaws.com/compute-type"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: rabbitmq
           image: rabbitmq:3.12-management-alpine
