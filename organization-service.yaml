@@ -25,6 +25,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
+            - name: SERVER_PORT
+              value: "8002"
             - name: EUREKA_HOST
               valueFrom:
                 configMapKeyRef:

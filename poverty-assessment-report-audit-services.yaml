@@ -25,6 +25,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
+            - name: SERVER_PORT
+              value: "8008"
             - name: EUREKA_HOST
               valueFrom:
                 configMapKeyRef:
@@ -164,6 +166,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
+            - name: SERVER_PORT
+              value: "8009"
             - name: EUREKA_HOST
               valueFrom:
                 configMapKeyRef:
@@ -303,6 +307,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
+            - name: SERVER_PORT
+              value: "8010"
             - name: EUREKA_HOST
               valueFrom:
                 configMapKeyRef:
@@ -442,6 +448,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
+            - name: SERVER_PORT
+              value: "8011"
             - name: EUREKA_HOST
               valueFrom:
                 configMapKeyRef:
