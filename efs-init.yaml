@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-init
+  namespace: sagamba
+spec:
+  containers:
+  - name: efs-init-container
+    image: amazonlinux
+    command: ["sh", "-c", "mkdir -p /efs/postgres /efs/redis /efs/rabbitmq && sleep 3600"]
+    volumeMounts:
+    - mountPath: /efs
+      name: efs
+  volumes:
+  - name: efs
+    persistentVolumeClaim:
+      claimName: postgres-pvc   # any PVC bound to the same EFS
+  restartPolicy: Never
+
