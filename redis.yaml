@@ -9,6 +9,7 @@ spec:
   resources:
     requests:
       storage: 20Gi
+  storageClassName: efs-sc
   volumeName: efs-pv-redis
 ---
 apiVersion: apps/v1
