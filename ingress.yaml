@@ -16,7 +16,7 @@ spec:
   ingressClassName: nginx
   rules:
     # API Gateway - backend for /api and /actuator
-    - host: api.sagamba.example.com
+    - host: sagambaapi.savetoserve.rw
       http:
         paths:
           - path: /
@@ -27,7 +27,7 @@ spec:
                 port:
                   number: 80
     # Frontend
-    - host: app.sagamba.example.com
+    - host: sagamba.savetoserve.rw
       http:
         paths:
           - path: /
