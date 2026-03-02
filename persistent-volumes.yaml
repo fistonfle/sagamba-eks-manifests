@@ -10,7 +10,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-017a91f59838dd637::postgres
+    volumeHandle: fs-017a91f59838dd637
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -24,7 +24,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-017a91f59838dd637::redis
+    volumeHandle: fs-017a91f59838dd637
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -38,4 +38,4 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-017a91f59838dd637::rabbitmq
+    volumeHandle: fs-017a91f59838dd637
