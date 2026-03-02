@@ -32,7 +32,34 @@ Your SAGAMBA application is fully deployed on AWS EKS and is **live and accessib
 
 ## 🚀 How to Access Your Application
 
-### Method 1: Port-Forward (Recommended for Development)
+### Method 1: HTTPS via Domain (Recommended for Production)
+
+Your application now has **automatic HTTPS** enabled using Let's Encrypt certificates managed by cert-manager.
+
+**Access via:**
+```
+https://sagamba.savetoserve.rw          (Frontend - Login Page)
+https://sagambaapi.savetoserve.rw       (API Gateway - Health & Actuator)
+```
+
+**Certificate Details:**
+- **Issuer:** Let's Encrypt (letsencrypt-prod)
+- **Auto-Renewal:** 30 days before expiration
+- **Domains:** sagamba.savetoserve.rw, sagambaapi.savetoserve.rw
+- **Secret:** sagamba-tls-cert (stored in Kubernetes)
+
+**Check Certificate Status:**
+```bash
+kubectl get certificate -n sagamba
+kubectl describe certificate sagamba-tls-cert -n sagamba
+
+# Watch for READY status to change from False to True (takes 1-2 minutes)
+kubectl get certificate -n sagamba -w
+```
+
+Once certificate is READY=True, HTTPS will be fully active.
+
+### Method 2: Port-Forward (Recommended for Development)
 
 **Step 1:** Open a terminal and start the port-forward tunnel:
 ```bash
