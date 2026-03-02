@@ -33,6 +33,9 @@ spec:
         - key: "eks.amazonaws.com/compute-type"
           operator: "Exists"
           effect: "NoSchedule"
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: postgres
           image: postgres:14-alpine
