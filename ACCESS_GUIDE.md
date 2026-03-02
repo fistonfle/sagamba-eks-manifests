@@ -211,6 +211,53 @@ kubectl port-forward -n sagamba svc/rabbitmq-service 15672:15672
 
 ## 🔧 Troubleshooting
 
+### CrashLoopBackOff (auth-service, organization-service, rabbitmq, etc.)
+
+**1. Get the crash reason from logs:**
+```bash
+# Last log from a crashing pod (replace with your pod name)
+kubectl logs -n sagamba deployment/auth-service --previous
+
+# Or for a specific pod
+kubectl logs -n sagamba auth-service-67f746b5dc-9jq95 --previous
+```
+
+**2. Common causes:**
+- **RabbitMQ/Postgres down:** Backend services need RabbitMQ and Postgres. If RabbitMQ is in CrashLoopBackOff, fix it first (see below); then auth and organization should start.
+- **Wrong PVC volume:** RabbitMQ and Redis had swapped PVC `volumeName` in the manifests (fixed: rabbitmq uses `efs-pv-rabbitmq`, redis uses `efs-pv-redis`). If you applied the old YAML, delete the PVCs and re-apply (data on that volume will be recreated):
+  ```bash
+  kubectl delete pvc rabbitmq-pvc redis-pvc -n sagamba
+  kubectl apply -f rabbitmq.yaml
+  kubectl apply -f redis.yaml
+  ```
+- **Secrets missing:** Ensure `sagamba-secrets` has keys: DB_USERNAME, DB_PASSWORD, RABBITMQ_USERNAME, RABBITMQ_PASSWORD, JWT_SECRET, POSTGRES_USER, POSTGRES_PASSWORD, REDIS_PASSWORD (see secrets.yaml or your secret store).
+
+**3. Check RabbitMQ specifically:**
+```bash
+kubectl logs -n sagamba deployment/rabbitmq --previous
+kubectl describe pod -n sagamba -l app=rabbitmq
+```
+
+### Pending pods (assessment-service, audit-service, group-service, etc.)
+
+**Cause:** Scheduler cannot place the pod—usually **insufficient CPU/memory** on nodes.
+
+**1. See why a pod is Pending:**
+```bash
+kubectl describe pod -n sagamba assessment-service-7f5f5bc78b-ddwc7
+```
+Look at **Events** at the bottom (e.g. "0/3 nodes are available: insufficient memory").
+
+**2. Options:**
+- **Scale down to 1 replica** so fewer pods need to schedule:
+  ```bash
+  kubectl scale deployment assessment-service --replicas=1 -n sagamba
+  kubectl scale deployment audit-service --replicas=1 -n sagamba
+  # ... repeat for other backends
+  ```
+- **Add nodes** or use a larger instance type (EKS Auto Mode will scale nodes; wait or adjust capacity).
+- **Lower resource requests** in the deployment YAML (e.g. `memory: "256Mi"`, `cpu: "100m"`) and re-apply—only if your nodes are small.
+
 ### If port-forward fails
 ```bash
 # Verify kubeconfig is set

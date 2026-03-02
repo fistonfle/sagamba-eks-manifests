@@ -10,7 +10,7 @@ spec:
     requests:
       storage: 20Gi
   storageClassName: efs-sc
-  volumeName: efs-pv-redis
+  volumeName: efs-pv-rabbitmq
 ---
 apiVersion: apps/v1
 kind: Deployment
