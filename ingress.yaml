@@ -7,17 +7,13 @@ metadata:
   name: sagamba-ingress
   namespace: sagamba
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
-    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
-    alb.ingress.kubernetes.io/backend-protocol: HTTP
-    # Optional: TLS with ACM certificate
-    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT:certificate/YOUR_ACME_ARN
-    # alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # NGINX Ingress Controller annotations
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
 spec:
-  ingressClassName: alb
+  ingressClassName: nginx
   rules:
     # API Gateway - backend for /api and /actuator
     - host: api.sagamba.example.com
