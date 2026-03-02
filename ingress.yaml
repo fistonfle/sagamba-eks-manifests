@@ -12,8 +12,15 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    # cert-manager annotations for automatic HTTPS
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - sagamba.savetoserve.rw
+    - sagambaapi.savetoserve.rw
+    secretName: sagamba-tls-cert
   rules:
     # API Gateway - backend for /api and /actuator
     - host: sagambaapi.savetoserve.rw
