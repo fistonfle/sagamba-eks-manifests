@@ -17,16 +17,66 @@ Your SAGAMBA application is fully deployed on AWS EKS and is **live and accessib
 - **Registry:** GitHub Container Registry (ghcr.io)
 
 ### Deployed Services
-**Core Services (9 running):**
+**Core Services (running):**
 - ✅ API Gateway (2 replicas)
 - ✅ Frontend (2 replicas)  
 - ✅ Service Registry (Eureka)
 - ✅ PostgreSQL 14 (with EFS storage)
 - ✅ Redis 7 (with EFS storage)
 - ✅ RabbitMQ 3.12 (with EFS storage)
-- ✅ Organization Service
 
-**Note:** 7 additional services are currently disabled due to application code configuration issues (Eureka client URL format). These can be enabled after fixing the application code.
+**Backend microservices (Auth, Organization, Beneficiary, IGA, Loan, Group, Poverty, Assessment, Report, Audit):**  
+The Eureka/Kubernetes port bug is **fixed** in the application code (all services use `SERVER_PORT`). Apply the manifests below to run these services.
+
+---
+
+## 🚀 Enable all backend services (fix 503 on /v3/api-docs/*)
+
+The **Eureka/Kubernetes port bug is fixed** in the Java code (services use `SERVER_PORT` instead of `*_SERVICE_PORT`). To run Auth, Organization, Assessment, and the other backends so Swagger and the API work:
+
+**1. Ensure fixed images are built and pushed** (from `sagamba-microservices` repo):
+- Push to `main`/`master` to trigger **Build and Push to GHCR (for EKS)**, or build and push images manually.
+- Images must include the `SERVER_PORT` change (already in the repo).
+
+**2. Apply all backend manifests** (from the `sagamba-eks-manifests` directory):
+
+```bash
+# Auth & Organization
+kubectl apply -f auth-service.yaml
+kubectl apply -f organization-service.yaml
+
+# Beneficiary & IGA
+kubectl apply -f beneficiary-iga-services.yaml
+
+# Group & Loan
+kubectl apply -f group-loan-services.yaml
+
+# Poverty, Assessment, Report, Audit
+kubectl apply -f poverty-assessment-report-audit-services.yaml
+```
+
+**3. If deployments exist but were scaled to 0**, scale them back up:
+
+```bash
+kubectl scale deployment auth-service --replicas=2 -n sagamba
+kubectl scale deployment organization-service --replicas=2 -n sagamba
+kubectl scale deployment beneficiary-service --replicas=2 -n sagamba
+kubectl scale deployment iga-service --replicas=2 -n sagamba
+kubectl scale deployment group-service --replicas=2 -n sagamba
+kubectl scale deployment loan-service --replicas=2 -n sagamba
+kubectl scale deployment poverty-service --replicas=2 -n sagamba
+kubectl scale deployment assessment-service --replicas=2 -n sagamba
+kubectl scale deployment report-service --replicas=2 -n sagamba
+kubectl scale deployment audit-service --replicas=2 -n sagamba
+```
+
+**4. Wait for pods to be Ready:**
+
+```bash
+kubectl get pods -n sagamba -w
+```
+
+Once backend pods are `Running` and `1/1` Ready, the gateway will stop returning 503 for `/v3/api-docs/assessment` and other service docs.
 
 ---
 
@@ -192,7 +242,7 @@ kubectl top pods -n sagamba
 
 ## 📝 Known Issues & Notes
 
-1. **7 Disabled Services:** Auth, Beneficiary, IGA, Loan, Poverty, Assessment, Report, Audit services are scaled to 0 because of a Spring Boot Eureka client configuration issue. The application code prepends `tcp://` to the Eureka hostname, which causes startup failures. These can be re-enabled after fixing the application code.
+1. **Backend services:** The Eureka/Kubernetes port bug (K8s injecting `tcp://...` into `*_SERVICE_PORT`) is fixed in the application code. All services use `SERVER_PORT` and manifests set it explicitly. Apply the backend manifests and use images built after the fix so Auth, Assessment, etc. run and `/v3/api-docs/*` return 200 instead of 503.
 
 2. **Network Access:** Your Windows client doesn't have direct VPN access to the VPC private IP range (172.31.x.x). External LoadBalancer and NodePort access requires VPN setup. Port-forward is the recommended method for secure access.
 
@@ -216,7 +266,7 @@ kubectl top pods -n sagamba
 
 ## 🎓 Next Steps
 
-1. **Fix Application Code:** Update Eureka client URL configuration to not include `tcp://` prefix. This will allow all 16 services to run.
+1. **Run all backends:** Apply the backend manifests and scale to 2 replicas (see **Enable all backend services** above). Use images built after the `SERVER_PORT` fix so 503 on `/v3/api-docs/assessment` (and other services) goes away.
 
 2. **Setup VPN (Optional):** For direct external access without port-forward, set up AWS VPN to your client machine.
 
