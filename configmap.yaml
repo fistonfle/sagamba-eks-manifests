@@ -19,7 +19,7 @@ data:
   # RabbitMQ
   RABBITMQ_HOST: "rabbitmq-service"
   RABBITMQ_PORT: "5672"
-  RABBITMQ_VIRTUAL_HOST: "sagamba"
+  RABBITMQ_VIRTUAL_HOST: "/sagamba"
   # Eureka
   EUREKA_HOST: "service-registry-service"
   EUREKA_PORT: "8761"
