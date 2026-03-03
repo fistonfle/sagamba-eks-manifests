@@ -96,14 +96,16 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8001
-            initialDelaySeconds: 90
+            initialDelaySeconds: 120
             periodSeconds: 10
+            failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 8001
-            initialDelaySeconds: 45
+            initialDelaySeconds: 60
             periodSeconds: 5
+            failureThreshold: 6
           resources:
             requests:
               memory: "512Mi"
