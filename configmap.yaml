@@ -7,17 +7,17 @@ metadata:
     app.kubernetes.io/part-of: sagamba
 data:
   # Database (used by services that reference sagamba-config)
-  POSTGRES_HOST: "postgres-service"
+  POSTGRES_HOST: "k8s-sagamba-postgres-c3879db218-51414cdb685da0ca.elb.eu-north-1.amazonaws.com"
   POSTGRES_PORT: "5432"
   POSTGRES_DB: "sagamba_db"
-  DB_HOST: "postgres-service"
+  DB_HOST: "k8s-sagamba-postgres-c3879db218-51414cdb685da0ca.elb.eu-north-1.amazonaws.com"
   DB_PORT: "5432"
   DB_NAME: "sagamba_db"
   # Redis
-  REDIS_HOST: "redis-service"
+  REDIS_HOST: "k8s-sagamba-redislb-f8b1cb7c08-c154a7eb1574ce52.elb.eu-north-1.amazonaws.com"
   REDIS_PORT: "6379"
   # RabbitMQ
-  RABBITMQ_HOST: "rabbitmq-service"
+  RABBITMQ_HOST: "k8s-sagamba-rabbitmq-3e603ac42f-b28f495383b7df05.elb.eu-north-1.amazonaws.com"
   RABBITMQ_PORT: "5672"
   RABBITMQ_VIRTUAL_HOST: "/sagamba"
   # Eureka
