@@ -17,15 +17,19 @@ Get-Process -Name kubectl -ErrorAction SilentlyContinue | Stop-Process -Force -E
 Start-Sleep -Seconds 1
 
 # Start all port-forwards in background (non-blocking)
-Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/postgres-service", "5432:5432"
-Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/redis-service", "6379:6379"
-Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/rabbitmq-service", "5672:5672", "15672:15672"
-Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/pgadmin", "5050:80"
+# Redirect stdout/stderr so AWS CLI "Invalid argument" on stop doesn't show in console (PowerShell requires different paths)
+Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/postgres-service", "5432:5432" -RedirectStandardOutput "NUL" -RedirectStandardError "$env:TEMP\pf-postgres-err.log"
+Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/redis-service", "6379:6379" -RedirectStandardOutput "NUL" -RedirectStandardError "$env:TEMP\pf-redis-err.log"
+Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/rabbitmq-service", "5672:5672", "15672:15672" -RedirectStandardOutput "NUL" -RedirectStandardError "$env:TEMP\pf-rabbitmq-err.log"
+Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/pgadmin", "5050:80" -RedirectStandardOutput "NUL" -RedirectStandardError "$env:TEMP\pf-pgadmin-err.log"
 
-Start-Sleep -Seconds 5
+# EKS auth (e.g. aws eks get-token) can take several seconds; wait before checking
+Start-Sleep -Seconds 10
 $listener = Get-NetTCPConnection -LocalPort 5432 -State Listen -ErrorAction SilentlyContinue
 if (-not $listener) {
-    Write-Host "WARNING: localhost:5432 is not listening. Port-forward may have failed. Check 'kubectl get pods -n sagamba -l app=postgres' and cluster access." -ForegroundColor Red
+    Write-Host "WARNING: localhost:5432 is not listening. Port-forward may still be starting (EKS auth can be slow) or may have failed." -ForegroundColor Red
+    Write-Host "  Check: kubectl get pods -n sagamba -l app=postgres" -ForegroundColor Gray
+    Write-Host "  Errors: $env:TEMP\pf-postgres-err.log" -ForegroundColor Gray
 } else {
     Write-Host "PostgreSQL port-forward is active (localhost:5432)." -ForegroundColor Green
 }
