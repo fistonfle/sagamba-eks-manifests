@@ -8,7 +8,6 @@ Write-Host "  PostgreSQL:   localhost:5432"
 Write-Host "  Redis:        localhost:6379"
 Write-Host "  RabbitMQ:     localhost:5672 (AMQP), localhost:15672 (UI)"
 Write-Host "  pgAdmin:      http://localhost:5050"
-Write-Host "  Eureka:       http://localhost:8761"
 Write-Host ""
 Write-Host "Press any key to stop all port forwards" -ForegroundColor Yellow
 Write-Host ""
@@ -22,7 +21,14 @@ Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n
 Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/redis-service", "6379:6379"
 Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/rabbitmq-service", "5672:5672", "15672:15672"
 Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/pgadmin", "5050:80"
-Start-Process -NoNewWindow -FilePath "kubectl" -ArgumentList "port-forward", "-n", "sagamba", "svc/service-registry-service", "8761:8761"
+
+Start-Sleep -Seconds 5
+$listener = Get-NetTCPConnection -LocalPort 5432 -State Listen -ErrorAction SilentlyContinue
+if (-not $listener) {
+    Write-Host "WARNING: localhost:5432 is not listening. Port-forward may have failed. Check 'kubectl get pods -n sagamba -l app=postgres' and cluster access." -ForegroundColor Red
+} else {
+    Write-Host "PostgreSQL port-forward is active (localhost:5432)." -ForegroundColor Green
+}
 
 Write-Host "All port-forwards started. Press any key to stop." -ForegroundColor Green
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
