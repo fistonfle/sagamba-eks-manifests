@@ -7,6 +7,22 @@ set -e
 NS="${NAMESPACE:-sagamba}"
 
 echo "Port-forwarding EKS infra to localhost (namespace=$NS). Press Ctrl+C to stop."
+
+# Pre-check: cluster access so we don't exit silently and close the window
+if ! kubectl cluster-info &>/dev/null; then
+  echo "Error: Cannot reach cluster (kubectl cluster-info failed)."
+  echo "Check: kubectl config current-context, and that you're connected to EKS."
+  read -p "Press Enter to close..."
+  exit 1
+fi
+if ! kubectl get ns "$NS" &>/dev/null; then
+  echo "Error: Namespace '$NS' not found."
+  read -p "Press Enter to close..."
+  exit 1
+fi
+
+# Don't exit on failure of background port-forwards
+set +e
 echo "  PostgreSQL: localhost:5432"
 echo "  Redis:      localhost:6379"
 echo "  RabbitMQ:   localhost:5672 (AMQP), localhost:15672 (UI)"
@@ -27,7 +43,6 @@ kubectl port-forward -n "$NS" svc/redis-service 6379:6379 &
 pids="$pids $!"
 kubectl port-forward -n "$NS" svc/rabbitmq-service 5672:5672 15672:15672 &
 pids="$pids $!"
-kubectl port-forward -n "$NS" svc/pgadmin 5050:80 &
-pids="$pids $!"
 
-wait
+# Run pgAdmin in foreground so the script stays open until Ctrl+C
+kubectl port-forward -n "$NS" svc/pgadmin 5050:80

@@ -10,7 +10,5 @@ spec:
     requests:
       storage: 20Gi
   storageClassName: efs-sc
-  selector:
-    matchLabels:
-      app: postgres
+  volumeName: efs-pv-postgres
 

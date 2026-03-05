@@ -261,6 +261,40 @@ kubectl get ingress -n sagamba -o yaml
 
 ---
 
+## 🔌 Load balancer vs pod status
+
+**The load balancer being pending or not connected does NOT cause pods to be Pending or CrashLoopBackOff.**
+
+| What you see | What it affects | What does *not* cause it |
+|--------------|-----------------|---------------------------|
+| **LoadBalancer EXTERNAL-IP &lt;pending&gt;** | External access (browser, Route 53). You can’t reach the app from the internet. | Pods still start and become Ready if the app is healthy. |
+| **Pods Pending** | Pod not scheduled. | Usually **insufficient CPU/memory** on nodes, or no node matching tolerations. |
+| **Pods CrashLoopBackOff** | App starts then exits; Kubernetes restarts it. | Caused by **application/config errors** (e.g. Eureka URL format), not by LB. |
+
+**Check load balancer and ingress (for external access only):**
+```bash
+# Services with type LoadBalancer
+kubectl get svc -n sagamba | findstr LoadBalancer
+
+# NGINX Ingress (if you use it for external traffic)
+kubectl get svc -n ingress-nginx
+kubectl get ingress -n sagamba
+```
+
+**Check why pods are Pending (scheduling):**
+```bash
+kubectl describe pod -n sagamba <pending-pod-name>
+# Look at "Events" for: "0/X nodes are available: insufficient memory" or "didn't match node selector"
+```
+
+**Check why pods are CrashLoopBackOff (app crash):**
+```bash
+kubectl logs -n sagamba <crashing-pod-name> --previous
+# Look for Eureka error: "Failed to convert ... for value [tcp://...]" or DB/Redis connection errors
+```
+
+---
+
 ## 📞 Support & Debugging
 
 **Check pod logs:**
