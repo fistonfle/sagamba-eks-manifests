@@ -16,6 +16,8 @@ spec:
       labels:
         app: beneficiary-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: beneficiary-service
           image: ghcr.io/fistonfle/sagamba-beneficiary-service:latest
@@ -158,6 +160,8 @@ spec:
       labels:
         app: iga-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: iga-service
           image: ghcr.io/fistonfle/sagamba-iga-service:latest

@@ -16,6 +16,8 @@ spec:
       labels:
         app: poverty-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: poverty-service
           image: ghcr.io/fistonfle/sagamba-poverty-service:latest
@@ -157,6 +159,8 @@ spec:
       labels:
         app: assessment-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: assessment-service
           image: ghcr.io/fistonfle/sagamba-assessment-service:latest
@@ -298,6 +302,8 @@ spec:
       labels:
         app: report-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: report-service
           image: ghcr.io/fistonfle/sagamba-report-service:latest
@@ -439,6 +445,8 @@ spec:
       labels:
         app: audit-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: audit-service
           image: ghcr.io/fistonfle/sagamba-audit-service:latest

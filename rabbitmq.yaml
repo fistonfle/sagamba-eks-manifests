@@ -36,6 +36,8 @@ spec:
         - key: "CriticalAddonsOnly"
           operator: "Exists"
           effect: "NoSchedule"
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: rabbitmq
           image: rabbitmq:3.12-management-alpine

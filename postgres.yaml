@@ -36,6 +36,8 @@ spec:
         - key: "CriticalAddonsOnly"
           operator: "Exists"
           effect: "NoSchedule"
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: postgres
           image: postgres:14-alpine

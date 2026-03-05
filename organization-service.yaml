@@ -16,6 +16,8 @@ spec:
       labels:
         app: organization-service
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: organization-service
           image: ghcr.io/fistonfle/sagamba-organization-service:latest

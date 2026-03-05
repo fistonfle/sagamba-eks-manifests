@@ -15,6 +15,8 @@ spec:
       labels:
         app: service-registry
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: service-registry
           image: ghcr.io/fistonfle/sagamba-service-registry:latest
