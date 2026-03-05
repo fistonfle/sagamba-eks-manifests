@@ -36,6 +36,11 @@ spec:
                 configMapKeyRef:
                   name: sagamba-config
                   key: EUREKA_PORT
+            - name: CORS_ALLOWED_ORIGINS
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: CORS_ALLOWED_ORIGINS
           livenessProbe:
             httpGet:
               path: /actuator/health
