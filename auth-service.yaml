@@ -93,9 +93,15 @@ spec:
                   name: sagamba-secrets
                   key: JWT_SECRET
             - name: REDIS_HOST
-              value: "redis-service"
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: REDIS_HOST
             - name: REDIS_PORT
-              value: "6379"
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: REDIS_PORT
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
