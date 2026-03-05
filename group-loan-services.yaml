@@ -16,8 +16,6 @@ spec:
       labels:
         app: group-service
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: group-service
           image: ghcr.io/fistonfle/sagamba-group-service:latest
@@ -160,8 +158,6 @@ spec:
       labels:
         app: loan-service
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: loan-service
           image: ghcr.io/fistonfle/sagamba-loan-service:latest

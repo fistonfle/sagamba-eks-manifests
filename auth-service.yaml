@@ -16,8 +16,6 @@ spec:
       labels:
         app: auth-service
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: auth-service
           image: ghcr.io/fistonfle/sagamba-auth-service:latest

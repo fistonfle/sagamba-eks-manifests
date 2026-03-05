@@ -26,8 +26,6 @@ spec:
       labels:
         app: pgadmin
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
       - name: pgadmin
         image: dpage/pgadmin4:latest

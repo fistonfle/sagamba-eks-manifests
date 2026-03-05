@@ -16,8 +16,6 @@ spec:
       labels:
         app: sagamba-frontend
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
       containers:
         - name: frontend
           image: ghcr.io/fistonfle/sagamba-frontend:latest
