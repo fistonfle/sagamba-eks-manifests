@@ -89,13 +89,13 @@ spec:
                   key: RABBITMQ_PASSWORD
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8006
             initialDelaySeconds: 90
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8006
             initialDelaySeconds: 45
             periodSeconds: 5
@@ -231,13 +231,13 @@ spec:
                   key: RABBITMQ_PASSWORD
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8007
             initialDelaySeconds: 90
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8007
             initialDelaySeconds: 45
             periodSeconds: 5

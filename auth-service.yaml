@@ -100,7 +100,7 @@ spec:
             failureThreshold: 6
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8001
             initialDelaySeconds: 60
             periodSeconds: 5

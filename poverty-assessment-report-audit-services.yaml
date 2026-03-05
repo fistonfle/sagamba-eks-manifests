@@ -89,13 +89,13 @@ spec:
                   key: RABBITMQ_PASSWORD
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8008
             initialDelaySeconds: 90
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8008
             initialDelaySeconds: 45
             periodSeconds: 5
@@ -230,13 +230,13 @@ spec:
                   key: RABBITMQ_PASSWORD
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8009
             initialDelaySeconds: 90
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8009
             initialDelaySeconds: 45
             periodSeconds: 5
@@ -371,13 +371,13 @@ spec:
                   key: RABBITMQ_PASSWORD
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8010
             initialDelaySeconds: 90
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8010
             initialDelaySeconds: 45
             periodSeconds: 5
@@ -512,13 +512,13 @@ spec:
                   key: RABBITMQ_PASSWORD
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8011
             initialDelaySeconds: 90
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /api/actuator/health
               port: 8011
             initialDelaySeconds: 45
             periodSeconds: 5
