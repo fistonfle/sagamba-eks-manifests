@@ -27,3 +27,18 @@ data:
   EUREKA_PORT: "8761"
   # Profile for K8s (override per deployment if needed)
   SPRING_PROFILES_ACTIVE: "kubernetes"
+  # --- Auth service: SMTP / Email (non-sensitive). Sensitive: MAIL_USERNAME, MAIL_PASSWORD in sagamba-secrets ---
+  MAIL_HOST: "smtp.gmail.com"
+  MAIL_PORT: "587"
+  MAIL_FROM: "noreply@sagamba.com"
+  MAIL_FROM_NAME: "noreply"
+  MAIL_NOTIFICATIONS_ENABLED: "true"
+  SMTP_AUTH: "true"
+  SMTP_STARTTLS: "true"
+  # URLs in password-reset and verification emails (use your frontend URL)
+  PASSWORD_RESET_BASE_URL: "https://sagamba.savetoserve.rw"
+  VERIFICATION_BASE_URL: "https://sagamba.savetoserve.rw"
+  # Redirect all notification emails to this address when set (optional)
+  DEFAULT_EMAIL: ""
+  ALWAYS_USE_DEFAULT_EMAIL: "false"
+  REQUIRE_OTP_FOR_LOGIN: "true"

@@ -52,6 +52,11 @@ spec:
                 configMapKeyRef:
                   name: sagamba-config
                   key: DB_NAME
+            - name: DB_MAX_POOL_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_MAX_POOL_SIZE
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -194,6 +199,11 @@ spec:
                 configMapKeyRef:
                   name: sagamba-config
                   key: DB_NAME
+            - name: DB_MAX_POOL_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DB_MAX_POOL_SIZE
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:

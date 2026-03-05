@@ -112,6 +112,94 @@ spec:
                 secretKeyRef:
                   name: sagamba-secrets
                   key: REDIS_PASSWORD
+            # SMTP / Email (auth-service: OTP, password reset, verification)
+            - name: MAIL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: MAIL_HOST
+            - name: MAIL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: MAIL_PORT
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: MAIL_USERNAME
+                  optional: true
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: MAIL_PASSWORD
+                  optional: true
+            - name: MAIL_FROM
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: MAIL_FROM
+            - name: MAIL_FROM_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: MAIL_FROM_NAME
+            - name: MAIL_NOTIFICATIONS_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: MAIL_NOTIFICATIONS_ENABLED
+            - name: SMTP_AUTH
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: SMTP_AUTH
+            - name: SMTP_STARTTLS
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: SMTP_STARTTLS
+            - name: PASSWORD_RESET_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: PASSWORD_RESET_BASE_URL
+            - name: VERIFICATION_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: VERIFICATION_BASE_URL
+            - name: DEFAULT_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: DEFAULT_EMAIL
+            - name: ALWAYS_USE_DEFAULT_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: ALWAYS_USE_DEFAULT_EMAIL
+            - name: REQUIRE_OTP_FOR_LOGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: REQUIRE_OTP_FOR_LOGIN
+            - name: INITIAL_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: INITIAL_ADMIN_USERNAME
+            - name: INITIAL_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: INITIAL_ADMIN_EMAIL
+            - name: INITIAL_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: INITIAL_ADMIN_PASSWORD
           livenessProbe:
             tcpSocket:
               port: 8001
