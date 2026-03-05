@@ -37,6 +37,11 @@ spec:
                 configMapKeyRef:
                   name: sagamba-config
                   key: EUREKA_PORT
+            - name: EUREKA_PREFER_IP_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: EUREKA_PREFER_IP_ADDRESS
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:

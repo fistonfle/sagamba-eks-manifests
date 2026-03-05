@@ -25,6 +25,8 @@ data:
   # Eureka
   EUREKA_HOST: "service-registry-service"
   EUREKA_PORT: "8761"
+  # Use IP for instance registration so gateway can resolve (pod hostnames don't resolve across pods)
+  EUREKA_PREFER_IP_ADDRESS: "true"
   # Profile for K8s (override per deployment if needed)
   SPRING_PROFILES_ACTIVE: "kubernetes"
   # --- Auth service: SMTP / Email (non-sensitive). Sensitive: MAIL_USERNAME, MAIL_PASSWORD in sagamba-secrets ---
