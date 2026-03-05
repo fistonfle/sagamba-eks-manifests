@@ -92,6 +92,15 @@ spec:
                 secretKeyRef:
                   name: sagamba-secrets
                   key: JWT_SECRET
+            - name: REDIS_HOST
+              value: "redis-service"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sagamba-secrets
+                  key: REDIS_PASSWORD
           livenessProbe:
             tcpSocket:
               port: 8001
