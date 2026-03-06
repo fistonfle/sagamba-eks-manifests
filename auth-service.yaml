@@ -112,6 +112,11 @@ spec:
                 configMapKeyRef:
                   name: sagamba-config
                   key: REDIS_PORT
+            - name: REDIS_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: REDIS_TIMEOUT
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -205,6 +210,11 @@ spec:
                 secretKeyRef:
                   name: sagamba-secrets
                   key: INITIAL_ADMIN_PASSWORD
+            - name: PUBLIC_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sagamba-config
+                  key: PUBLIC_API_URL
           livenessProbe:
             tcpSocket:
               port: 8001

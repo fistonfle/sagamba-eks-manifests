@@ -18,6 +18,7 @@ data:
   # Redis
   REDIS_HOST: "redis-service"
   REDIS_PORT: "6379"
+  REDIS_TIMEOUT: "6000"
   # RabbitMQ
   RABBITMQ_HOST: "rabbitmq-service"
   RABBITMQ_PORT: "5672"
@@ -32,7 +33,7 @@ data:
   # --- Auth service: SMTP / Email (non-sensitive). Sensitive: MAIL_USERNAME, MAIL_PASSWORD in sagamba-secrets ---
   MAIL_HOST: "smtp.gmail.com"
   MAIL_PORT: "587"
-  MAIL_FROM: "noreply@sagamba.com"
+  MAIL_FROM: "saveservegroup@gmail.com"
   MAIL_FROM_NAME: "noreply"
   MAIL_NOTIFICATIONS_ENABLED: "true"
   SMTP_AUTH: "true"
@@ -41,8 +42,10 @@ data:
   PASSWORD_RESET_BASE_URL: "https://sagamba.savetoserve.rw"
   VERIFICATION_BASE_URL: "https://sagamba.savetoserve.rw"
   # Redirect all notification emails to this address when set (optional)
-  DEFAULT_EMAIL: ""
-  ALWAYS_USE_DEFAULT_EMAIL: "false"
+  DEFAULT_EMAIL: "fistonfle04@gmail.com"
+  ALWAYS_USE_DEFAULT_EMAIL: "true"
   REQUIRE_OTP_FOR_LOGIN: "true"
   # CORS: allow frontend and Swagger UI origins (comma-separated)
   CORS_ALLOWED_ORIGINS: "https://sagamba.savetoserve.rw,https://sagambaapi.savetoserve.rw,http://localhost:3000,http://localhost:3001"
+  # Swagger/OpenAPI base URL (services that expose api-docs)
+  PUBLIC_API_URL: "https://sagambaapi.savetoserve.rw"
