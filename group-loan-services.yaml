@@ -97,6 +97,13 @@ spec:
                 secretKeyRef:
                   name: sagamba-secrets
                   key: RABBITMQ_PASSWORD
+          startupProbe:
+            httpGet:
+              path: /api/actuator/health
+              port: 8006
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
           livenessProbe:
             httpGet:
               path: /api/actuator/health
@@ -249,6 +256,13 @@ spec:
                 secretKeyRef:
                   name: sagamba-secrets
                   key: RABBITMQ_PASSWORD
+          startupProbe:
+            httpGet:
+              path: /api/actuator/health
+              port: 8007
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
           livenessProbe:
             httpGet:
               path: /api/actuator/health

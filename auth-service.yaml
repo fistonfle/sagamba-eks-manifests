@@ -215,6 +215,12 @@ spec:
                 configMapKeyRef:
                   name: sagamba-config
                   key: PUBLIC_API_URL
+          startupProbe:
+            tcpSocket:
+              port: 8001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
           livenessProbe:
             tcpSocket:
               port: 8001

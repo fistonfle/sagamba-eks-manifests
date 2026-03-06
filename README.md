@@ -178,3 +178,9 @@ kubectl get pods,svc,hpa -n sagamba
 kubectl logs -f deployment/api-gateway -n sagamba
 kubectl describe ingress sagamba-ingress -n sagamba
 ```
+
+**Redeploy for full demo seeding (FCP, groups, cluster, beneficiaries):** see the **docs** folder at the repository root: [docs/eks/REDEPLOY_FOR_SEEDING.md](../docs/eks/REDEPLOY_FOR_SEEDING.md) for the exact order and `kubectl rollout restart` steps.
+
+## Documentation
+
+All EKS guides (troubleshooting, port-forward, OTP/mail, access, env checklist, redeploy for seeding) are in the repository root **docs/eks/** folder. From the repo root: [docs/README.md](../docs/README.md).
