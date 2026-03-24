@@ -43,7 +43,7 @@ data:
   VERIFICATION_BASE_URL: "https://sagamba.savetoserve.rw"
   # Redirect all notification emails to this address when set (optional)
   DEFAULT_EMAIL: "fistonfle04@gmail.com"
-  ALWAYS_USE_DEFAULT_EMAIL: "true"
+  ALWAYS_USE_DEFAULT_EMAIL: "false"
   REQUIRE_OTP_FOR_LOGIN: "true"
   # CORS: allow frontend and Swagger UI origins (comma-separated)
   CORS_ALLOWED_ORIGINS: "https://sagamba.savetoserve.rw,https://sagambaapi.savetoserve.rw,http://localhost:3000,http://localhost:3001"
