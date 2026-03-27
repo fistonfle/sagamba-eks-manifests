@@ -45,7 +45,7 @@ data:
   DEFAULT_EMAIL: "fistonfle04@gmail.com"
   ALWAYS_USE_DEFAULT_EMAIL: "true"
   REQUIRE_OTP_FOR_LOGIN: "true"
-  # CORS: allow frontend and Swagger UI origins (comma-separated)
+  # CORS: allow frontend and Swagger UI origins (comma-separated) 
   CORS_ALLOWED_ORIGINS: "https://sagamba.savetoserve.rw,https://sagambaapi.savetoserve.rw,http://localhost:3000,http://localhost:3001"
   # Swagger/OpenAPI base URL (services that expose api-docs)
   PUBLIC_API_URL: "https://sagambaapi.savetoserve.rw"
